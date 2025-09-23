@@ -8,9 +8,6 @@ spec:
     kind: FinWebAppStack
     spec:
       projectName: string
-      bucketType:
-        type: string
-        default: private
     status:
       stackConditions: ${projectns.status.phase}
   # Define your resources
@@ -20,13 +17,13 @@ spec:
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: ${schema.spec.name}
+          name: ${schema.spec.projectName}
     - id: awss3bucket
       template:
         apiVersion: s3.services.k8s.aws/v1alpha1
         kind: Bucket
         metadata:
-          name: ${schema.spec.name}-b
-          namespace: ${schema.spec.name}
+          name: ${schema.spec.projectName}-b
+          namespace: ${schema.spec.projectName}
         spec:
-          name: pfe-ue1-${schema.spec.name}-bucket
+          name: pfe-ue1-${schema.spec.projectName}-bucket
