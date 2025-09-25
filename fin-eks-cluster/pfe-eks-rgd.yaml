@@ -10,8 +10,7 @@ spec:
       ClusterName: string
       ClusterVersion: string
     status:
-      clusterEndpoint: ${awsEksCluster.status.endpoint}
-      status: ${awsEksCluster.status.status}
+      clusterARN: ${cluster.status.ackResourceMetadata.arn}
   # Define your resources
   resources:
     - id: iam
@@ -28,7 +27,7 @@ spec:
         metadata:
           name: fin-subnet-config
           namespace: default
-    - id: awsEksCluster
+    - id: cluster
       template:
         apiVersion: eks.services.k8s.aws/v1alpha1
         kind: Cluster
