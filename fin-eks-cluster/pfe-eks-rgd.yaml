@@ -45,6 +45,12 @@ spec:
               - "general-purpose"
               - "system"
             nodeRoleARN: ${iam.data.?NODE_ROLE_ARN}
+          kubernetesNetworkConfig: 
+            elasticLoadBalancing: 
+              enabled: true
+          storageConfig: 
+            blockStorage: 
+              enabled: true
           resourcesVPCConfig:
             endpointPrivateAccess: true
             endpointPublicAccess: false
