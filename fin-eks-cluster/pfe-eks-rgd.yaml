@@ -40,16 +40,16 @@ spec:
           version: ${schema.spec.ClusterVersion}
           accessConfig:
             authenticationMode: API_AND_CONFIG_MAP
-          roleARN: ${iam.data.CLUSTER_ROLE_ARN}
+          roleARN: ${iam.data.?CLUSTER_ROLE_ARN}
           computeConfig:
             enabled: true
             nodePools:
               - "general-purpose"
               - "system"
-            nodeRoleARN: ${iam.data.NODE_ROLE_ARN}
+            nodeRoleARN: ${iam.data.?NODE_ROLE_ARN}
           resourcesVPCConfig:
             endpointPrivateAccess: true
             endpointPublicAccess: false
             subnetIDs:
-              - ${networking.data.SUBNET_PRIVATE_A}
-              - ${networking.data.SUBNET_PRIVATE_B}
+              - ${networking.data.?SUBNET_PRIVATE_A}
+              - ${networking.data.?SUBNET_PRIVATE_B}
