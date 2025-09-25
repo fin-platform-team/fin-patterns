@@ -1,0 +1,55 @@
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: fin.ekscluster.kro.run
+spec:
+  schema:
+    apiVersion: v1alpha1
+    kind: FinEKSCluster
+    spec:
+      ClusterName: string
+      ClusterVersion: string
+    status:
+      clusterARN: ${awsEksCluster.status.ackResourceMetadata.arn}
+      clusterEndpoint: ${awsEksCluster.status.endpoint}
+      status: ${awsEksCluster.status.status}
+  # Define your resources
+  resources:
+    - id: iam
+      externalRef:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: fin-iam-config
+          namespace: default
+    - id: networking
+      externalRef:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: fin-subnet-config
+          namespace: default
+    - id: awsEksCluster
+      template:
+        apiVersion: eks.services.k8s.aws/v1alpha1
+        kind: Cluster
+        metadata:
+          name: ${schema.spec.ClusterName}
+        spec:
+          name: ${schema.spec.ClusterName}
+          version: ${schema.spec.ClusterVersion}
+          accessConfig:
+            authenticationMode: API_AND_CONFIG_MAP
+          roleARN: ${iam.data.CLUSTER_ROLE_ARN}
+          computeConfig:
+            enabled: true
+            nodePools:
+              - "general-purpose"
+              - "system"
+            nodeRoleARN: ${iam.data.NODE_ROLE_ARN}
+          resourcesVPCConfig:
+            endpointPrivateAccess: true
+            endpointPublicAccess: false
+            subnetIDs:
+              - ${networking.data.SUBNET_PRIVATE_A}
+              - ${networking.data.SUBNET_PRIVATE_B}
