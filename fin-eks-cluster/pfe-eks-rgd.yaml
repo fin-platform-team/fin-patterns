@@ -10,7 +10,6 @@ spec:
       ClusterName: string
       ClusterVersion: string
     status:
-      clusterARN: ${awsEksCluster.status.ackResourceMetadata.arn}
       clusterEndpoint: ${awsEksCluster.status.endpoint}
       status: ${awsEksCluster.status.status}
   # Define your resources
