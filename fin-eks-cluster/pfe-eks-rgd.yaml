@@ -11,6 +11,8 @@ spec:
       ClusterVersion: string
     status:
       clusterARN: ${cluster.status.ackResourceMetadata.arn}
+      clusterStatus: ${cluster.status.status}
+      clusterEndpoint: ${cluster.status.endpoint}
   # Define your resources
   resources:
     - id: iam
